@@ -3,6 +3,21 @@ let pacientes = [];
 document.getElementById('formulario').addEventListener('submit', cadastrarPaciente);
 document.getElementById('busca').addEventListener('input', () => listarPacientes());
 
+// ✅ Função para validar CPF usando isNaN
+function validarCPF(cpf) {
+  if (cpf.length !== 11) {
+    return false;
+  }
+
+  for (let i = 0; i < cpf.length; i++) {
+    if (isNaN(cpf[i])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 function cadastrarPaciente(evento) {
   evento.preventDefault();
 
@@ -20,6 +35,11 @@ function cadastrarPaciente(evento) {
 
   if (!/^\d{4}-\d{2}-\d{2}$/.test(nascimento)) {
     alert("A data deve estar no formato AAAA-MM-DD.");
+    return;
+  }
+
+  if (!validarCPF(cpf)) {
+    alert("CPF inválido! Digite apenas números (11 dígitos).");
     return;
   }
 
@@ -107,4 +127,6 @@ function prepararEdicao(cpf) {
   document.getElementById('diagnostico').value = paciente.diagnostico;
 
   pacientes = pacientes.filter(p => p.cpf !== cpf);
+
+  document.getElementById('formulario').scrollIntoView({ behavior: 'smooth' });
 }
